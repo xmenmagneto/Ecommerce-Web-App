@@ -1,0 +1,73 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand navbar-left" href="/">Ecommerce</a>
+        </div>
+
+
+
+
+        <div id="navbar" class="navbar-collapse collapse">
+
+            <form class="navbar-form navbar-left" method="post" action="/search">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Bonsai尚未付费">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </span>
+                </div>
+            </form>
+
+            <ul class="nav navbar-nav navbar-right">
+
+                <li>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Categories</a>
+                    <ul class="dropdown-menu">
+                        <% for(var i=0; i < categories.length; i++) { %>
+                            <li><a href="/products/<%=categories[i]._id%>"><%=categories[i].name%></a></li>
+                        <% } %>
+                    </ul>
+                </li>
+
+                <% if(!user) { %>
+                <li>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Signup / Login</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/signup">Signup</a></li>
+                        <li><a href="/login">Login</a> </li>
+                    </ul>
+                </li>
+                <% }else { %>
+                <li>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%=user.profile.name%></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/profile">Profile</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </li>
+                <% } %>
+
+                <% if(user) { %>    <!--user logged in-->
+                    <li><a href="/cart">
+                            <i class="glyphicon glyphicon-shopping-cart"></i>
+                            <label class="badge"><%=sum%></label>
+                        </a>
+                    </li>
+                <% }else { %>    <!-- user not logged in-->
+                    <li><a href="/cart">
+                            <i class="glyphicon glyphicon-shopping-cart"></i>
+                            <span class="badge"></span>
+                        </a>
+                    </li>
+                <% } %>
+
+            </ul>
+        </div>
+    </div>
+</nav>

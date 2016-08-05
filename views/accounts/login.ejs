@@ -1,0 +1,32 @@
+<%- layout('layout')%>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <% if(message.length > 0) { %>  <!--error object 是存在的, length =0-->
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <%= message%>
+            </div>
+            <% } %>
+            <form action="/login" method="post">
+                <h1>Login</h1>
+                <div class="form-group">
+                    <input type="email" class="form-control" name="email" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="Enter your password">
+                </div>
+                <button type="submit" class="btn btn-block btn-success">Submit</button>
+
+                <a style="padding-bottom: 0" class="btn btn-block btn-social btn-facebook text-center" href="/auth/facebook">
+                    <i class="fa fa-facebook"></i>
+                    <p class="text-center" >Sign in with Facebook</p>
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
