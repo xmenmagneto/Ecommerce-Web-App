@@ -7,6 +7,6 @@ module.exports = {
         clientID: process.env.FACEBOOK_ID || '1757809527841344',
         clientSecret: process.env.FACEBOOK_SECRET || '',
         profileFields: ['email', 'displayName'],
-        callbackURL: 'http://sheltered-escarpment-36743.herokuapp.com/auth/facebook/callback'
+        callbackURL: process.env.PORT+'/auth/facebook/callback'
     }
 };
