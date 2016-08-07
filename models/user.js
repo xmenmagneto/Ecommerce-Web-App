@@ -3,8 +3,9 @@ var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var Schema = mongoose.Schema;
 
-
-//The user Schema field
+//=========================================
+//The userSchema
+//=========================================
 var UserSchema = new Schema({
     email: {type: String, unique:true, lowercase:true}, //unique: can only be created one time
     password: String,
@@ -21,26 +22,38 @@ var UserSchema = new Schema({
     }]
 });
 
-
-//Hash the passwords before we save it to the database
-UserSchema.pre('save', function (next) {
+//=========================================
+//Method: Hash the passwords
+//=========================================
+//pre is a built-in mongoose method
+UserSchema.pre('save', function (next) {   //before saving newUser into database
     var user = this;  //this refers to userSchema
+    //only hash pwd if it has been modified (or is new)
+    //更新地址等信息, 然后save newUser, 并不会改变密码,不需要hash
     if (!user.isModified('password')) return next();
     bcrypt.genSalt(10, function (err, salt) {
         if(err) return next(err);
+        // hash the password using our new salt
         bcrypt.hash(user.password, salt, null, function (err, hash) {
             if (err) return next(err);
+            //overwrite the plaintext pwd with the hashed one
             user.password = hash;
             next();
         });
     });
 });
 
-
-//compare pwd in the database and the one typed in
-UserSchema.methods.comparePassword = function (password) {
-  return bcrypt.compareSync(password, this.password);
+//=========================================
+//Method: compare pwd
+//=========================================
+//create a custom method
+UserSchema.methods.comparePassword = function (password) { //the pwd typed in
+  //bcrypt built-in method
+  return bcrypt.compareSync(password, this.password);  //this.password 是存的hash
 };
+
+
+
 
 UserSchema.methods.gravatar = function (size) {
     if(!this.size) size = 200;
@@ -49,4 +62,7 @@ UserSchema.methods.gravatar = function (size) {
     return "https://gravatar.com/avatar/" + md5 + "?s=" + size + "&d=retro";
 };
 
-module.exports = mongoose.model("User", UserSchema); //export UserSchema, so other files can use it
+
+
+//export UserSchema, so other files can use it
+module.exports = mongoose.model("User", UserSchema);

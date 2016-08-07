@@ -71,16 +71,23 @@ cursor.on('error', function (err) {
 //show cart
 //============================================
 router.get('/cart', function (req, res, next) {
-    Cart
-        .findOne({owner: req.user._id})
-        .populate('items.item')
-        .exec(function (err, foundCart) {
-            if(err) return next(err);
-            res.render('main/cart', {
-                foundCart: foundCart,
-                message: req.flash('remove')
+    if(!req.user) {
+        req.flash('loginMessage', 'Please login to check your cart');
+        return res.redirect('/login');
+    }else {
+        Cart
+            .findOne({owner: req.user._id})
+            .populate('items.item')
+            .exec(function (err, foundCart) {
+                if(err) return next(err);
+                res.render('main/cart', {
+                    foundCart: foundCart,
+                    message: req.flash('remove')
+                });
             });
-        });
+    }
+    
+    
 });
 
 
@@ -156,6 +163,9 @@ router.get('/search', function (req, res, next) {
 
 
 
+//============================================
+//home route
+//============================================
 //pagination
 router.get('/', function (req, res, next) {
     if(req.user){   // if user is logged in
@@ -167,13 +177,6 @@ router.get('/', function (req, res, next) {
 //page after the 1st
 router.get('/page/:page', function (req, res, next) {
     paginate(req, res, next);
-});
-
-
-
-
-router.get('/about', function (req, res) {
-    res.render('./main/about');
 });
 
 

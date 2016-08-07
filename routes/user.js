@@ -10,10 +10,9 @@ var Cart = require('../models/cart');
 //====================================
 router.get('/login', function (req, res) {
     //if user already login, redirect to home route
-    //if (req.user)  return res.redirect('/');
+    if(req.user) return res.redirect('/');
     res.render('accounts/login', {message: req.flash('loginMessage')});
 });
-
 router.post('/login', passport.authenticate('local-login',{
     successRedirect: '/profile',
     failureRedirect: '/login',
@@ -21,6 +20,10 @@ router.post('/login', passport.authenticate('local-login',{
 }), function (req, res) {
 });
 
+
+//====================================
+//get profile route
+//====================================
 router.get('/profile', passportConf.isAuthenticated, function (req, res, next) {
     User
         .findOne({_id: req.user._id})
@@ -48,17 +51,18 @@ router.post('/signup', function (req, res, next) {
             user.email = req.body.email;
             user.password = req.body.password;
             user.profile.picture = user.gravatar();
-
+            //validate user email
             User.findOne({email: req.body.email}, function (err, existingUser) {
                 if(existingUser){
                     req.flash('error', 'This email already exists!');
+                    //在redirect之前,flash已经有了error message
                     return res.redirect('/signup');
                 }else{
                     user.save(function (err, user) {
                         if(err) return next(err);
                         callback(null, user);
                     });
-                };
+                }
             });
         },
         function (user) {
@@ -116,11 +120,12 @@ router.post('/edit-profile', function (req, res, next) {
 //send the user to facebook to do authentication
 router.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
 
-//callback route right after facebook has finished auth
+//callback route right after facebook has authenticated the user
 router.get('/auth/facebook/callback', passport.authenticate('facebook', {
     successRedirect: '/profile',
     failureRedirect: '/login'
-}));
+}), function (req, res) {
+});
 
 
 
