@@ -1,6 +1,6 @@
 module.exports = {
     database: 'mongodb://Deng:13919273153dtc@ds031925.mlab.com:31925/ecommerce_deng',
-    port: 3000,
+    port: process.env.PORT,
     secretKey: "TingchangDeng@Zhu",  //secret key for sessions
 
     //facebook会被应用在middleware中
