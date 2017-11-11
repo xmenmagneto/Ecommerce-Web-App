@@ -1,5 +1,10 @@
 body {
     margin-top: 100px;
+    background: #bc4e9c;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #f80759, #bc4e9c);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #f80759, #bc4e9c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
 }
 
 .product-image {
@@ -7,6 +12,18 @@ body {
 }
 
 .jumbotron {
+    color: #0f9b0f;
+
     margin-top: -14%;
-    padding-top: 14%;
+    padding-top: 20%;
+    margin-bottom: 40px;
+    background:      url('../img/shop.jpg') no-repeat 50% 50%;
+    background-size: 100%;
+    box-shadow:  0px 2px 10px #333333;
+    border-radius: 10px;
+}
+
+.thumbnail {
+    box-shadow:  0px 2px 10px #333333;
+    border-radius: 10px;
 }
